@@ -1,4 +1,6 @@
 //Proof-of-Concept Code for AES-128 encryption of a 16-byte buffer.
+//You may verify that this gives the encryption by setting a breakpoint at line 93 and inspecting buffer.
+//This encrypts the test vector FIPS test vector: AES-128 at https://www.cryptool.org/en/cto/aes-step-by-step
 
 #include <stdio.h>
 #include <stdint.h>
