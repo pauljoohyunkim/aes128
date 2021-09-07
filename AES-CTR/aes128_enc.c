@@ -44,10 +44,6 @@ int main(int argc, char** argv)
         return 1;
     }
 
-
-
-
-
     //Reading Key
     FILE* keyfile = fopen(argv[2],"rb");
     fread(key,1,16,keyfile);
