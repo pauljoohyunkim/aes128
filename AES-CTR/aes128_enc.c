@@ -20,9 +20,9 @@ void switch_pos(int a, int b);
 void mult();
 
 
-uint8_t buffer[16];
-uint8_t key[16];
-uint8_t expanded_key[16 * NUM_OF_ROUND_KEY];          //11 is the number of round keys.
+uint8_t buffer[16] = {0};
+uint8_t key[16] = {0};
+uint8_t expanded_key[16 * NUM_OF_ROUND_KEY] = {0};          //11 is the number of round keys.
 uint8_t nonce[16];
 uint8_t counter_vec[16] = {0};
 uint8_t inputBuffer[16];
@@ -51,7 +51,6 @@ int main(int argc, char** argv)
 
     //Generating nonce
     nonce_gen();
-
 
     //Reading the file, 16 byte at a time, and using AES-CTR to encrypt (nonce ^ counter),
     //and xor-ing the encrypted (nonce ^ counter) with the previously read 16 bytes.
@@ -92,8 +91,6 @@ int main(int argc, char** argv)
 
         fwrite(buffer,1,len_of_incomplete_block,output);        //Only writing the required bits.
     }
-
-    
     
     fclose(input);
     fclose(output);
