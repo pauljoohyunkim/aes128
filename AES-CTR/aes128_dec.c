@@ -44,24 +44,15 @@ int main(int argc, char** argv)
         return 1;
     }
 
-
-
-
-
     //Reading Key
     FILE* keyfile = fopen(argv[2],"rb");
     fread(key,1,16,keyfile);
     fclose(keyfile);
 
-    
-
-
     //Reading the file, 16 byte at a time, and using AES-CTR to encrypt (nonce ^ counter),
     //and xor-ing the encrypted (nonce ^ counter) with the previously read 16 bytes.
     FILE* input = fopen(argv[1],"rb");
     FILE* output = fopen(argv[3],"wb");
-
-
 
     //Finding the length of file
     fseek(input,0,SEEK_END);
@@ -70,7 +61,6 @@ int main(int argc, char** argv)
 
     unsigned int num_of_full_blocks = filelen / 16 - 1;            //Subtracting the nonce
     unsigned int len_of_incomplete_block = filelen % 16;
-
 
     //Reading nonce from the beginning of the encrypted file.
     fread(nonce,1,16,input);
@@ -98,12 +88,9 @@ int main(int argc, char** argv)
 
         fwrite(buffer,1,len_of_incomplete_block,output);        //Only writing the required bits.
     }
-
-    
     
     fclose(input);
     fclose(output);
-
 
     return 0;
 }
