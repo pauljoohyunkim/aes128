@@ -1,8 +1,8 @@
 //AES128 - CTR Decryptor
-//This code is almost identical to the encryption.
-//(This is because encryption method was not encrypting the file, but the nonce instead.)
+//The code is almost identical to the encryptor, but in different ordering.
 
 #include <stdio.h>
+#include <sys/stat.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,12 +12,12 @@
 
 void counter_inc();
 void xor(uint8_t* a, uint8_t* b);
-void aes();
+void aes(uint8_t* buffer);
 void key_schedule();
-void sbox_text();
+void sbox_text(uint8_t* buffer);
 void permutation();
 void switch_pos(int a, int b);
-void mult();
+void mult(uint8_t* buffer);
 
 
 uint8_t buffer[16] = {0};
@@ -26,7 +26,7 @@ uint8_t expanded_key[16 * NUM_OF_ROUND_KEY] = {0};          //11 is the number o
 uint8_t nonce[16];
 uint8_t counter_vec[16] = {0};
 uint8_t inputBuffer[16];
-
+unsigned long long filelen = 0;
 
 int main(int argc, char** argv)
 {
@@ -49,21 +49,21 @@ int main(int argc, char** argv)
     fread(key,1,16,keyfile);
     fclose(keyfile);
 
+    //Finding length of input file.
+    struct stat st;
+    stat(argv[1], &st);
+    filelen = st.st_size;
+
     //Reading the file, 16 byte at a time, and using AES-CTR to encrypt (nonce ^ counter),
     //and xor-ing the encrypted (nonce ^ counter) with the previously read 16 bytes.
     FILE* input = fopen(argv[1],"rb");
     FILE* output = fopen(argv[3],"wb");
 
-    //Finding the length of file
-    fseek(input,0,SEEK_END);
-    unsigned int filelen = ftell(input);         //Length of file
-    rewind(input);
-
-    unsigned int num_of_full_blocks = filelen / 16 - 1;            //Subtracting the nonce
-    unsigned int len_of_incomplete_block = filelen % 16;
-
-    //Reading nonce from the beginning of the encrypted file.
+    //Reading nonce
     fread(nonce,1,16,input);
+
+    unsigned long long num_of_full_blocks = filelen / 16 - 1;
+    unsigned long long len_of_incomplete_block = filelen % 16;
 
     //Full blocks
     for(int counter = 0; counter < num_of_full_blocks; counter++)
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
         fread(inputBuffer,1,16,input);
         xor(nonce, counter_vec);                //Xoring nonce and counter, and then storing into buffer
         counter_inc();                      //Increase counter for next block.
-        aes();                              //Perform aes128 encryption to create counter block in buffer
+        aes(buffer);                              //Perform aes128 encryption to create counter block in buffer
         xor(inputBuffer,buffer);            //Xoring inputBuffer and buffer, and storing into buffer
                                             //Note that this is okay since xor function works "byte-wisely" for the array.
         fwrite(buffer,1,16,output);
@@ -83,7 +83,7 @@ int main(int argc, char** argv)
         fread(inputBuffer,1,16,input);
         xor(nonce, counter_vec);
         //No need for increasing the counter
-        aes();
+        aes(buffer);
         xor(inputBuffer,buffer);
 
         fwrite(buffer,1,len_of_incomplete_block,output);        //Only writing the required bits.
@@ -128,7 +128,7 @@ void xor(uint8_t* a, uint8_t* b)
     }
 }
 
-void aes()
+void aes(uint8_t* buffer)
 {
 //Initialization
     for(int i = 0; i < 16; i++)
@@ -140,9 +140,9 @@ void aes()
     //Round 1 ~ 9
     for(int i = 1; i < 10; i++)
     {
-        sbox_text();
+        sbox_text(buffer);
         permutation();
-        mult();
+        mult(buffer);
         //Adding subkey
         for(int j = 0; j < 16; j++)
         {
@@ -150,7 +150,7 @@ void aes()
         }
     }
     //Round 10: Multiplication by matrix excluded.
-    sbox_text();
+    sbox_text(buffer);
     permutation();
     for(int j = 0; j < 16; j++)
     {
@@ -207,7 +207,7 @@ void key_schedule()
 
 
 //Byte string substitution using single byte substitution
-void sbox_text()
+void sbox_text(uint8_t* buffer)
 {
     for(int i = 0; i < 16; i++)
     {
@@ -239,7 +239,7 @@ void permutation()
 
 }
 
-void mult()
+void mult(uint8_t* buffer)
 {
     //Copying buffer onto temp_buffer
     uint8_t temp_buffer[16];
