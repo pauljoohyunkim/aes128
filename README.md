@@ -10,7 +10,7 @@ In the AES-CTR folder, there are two implementations of CTR mode in two language
 
 **Note that they are both natively for Linux.**
 
-Also note that x86 assembly implementation does not compile in an ARM environment. (One might need to port that somehow.)
+Also note that x86 assembly implementation does not compile in an ARM environment. (One might need to port that somehow.) Also, **This implementation was written without a regard for optimization.** This issue might be resolved later.
 
 
 ### Compiling & Porting
