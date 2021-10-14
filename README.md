@@ -4,7 +4,18 @@
 The POC (Proof-of-Concept) code is currently being used to make a simple file encryption program. Read through in order to see step-by-step on how AES-128 works. Run "compile.sh" file to create binary files.
 
 
-# AES-CTR File Encryptor/Decryptor
-In the AES-CTR folder, you can compile both aes128_enc.c and aes128_dec.c to use them as simple file encryptor/decryptor. Also, since single threaded, encryption process could be quite slow. These two issues will be fixed soon.
+## AES-CTR File Encryptor/Decryptor
 
-These both only work on Linux at the moment. To port the C implementation to Windows, just note that I've used sys/stat.h header for the length of the file, which is a Linux exclusive, hence you may switch that out with a Windows equivalent.
+In the AES-CTR folder, there are two implementations of CTR mode in two languages. One is written in C, and the other is written in x86 assembly.
+
+**Note that they are both natively for Linux.**
+
+Also note that x86 assembly implementation does not compile in an ARM environment. (One might need to port that somehow.)
+
+
+### Compiling & Porting
+
+
+- Run "./compile.sh" or "bash compile.sh" for either of the implementation to create a folder called "bin" and binaries inside.
+
+- For the C implementation, you can somewhat easily port it to Windows version by changing the <sys/stat.h> with an Windows equivalent, or using a while loop to avoid using a separate header to determine the size of the input file altogether.

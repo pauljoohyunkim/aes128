@@ -50,6 +50,8 @@ int main(int argc, char** argv)
     fread(key,1,16,keyfile);
     fclose(keyfile);
 
+    key_schedule();
+
     //Finding length of input file.
     struct stat st;
     stat(argv[1], &st);
@@ -149,7 +151,7 @@ void aes(uint8_t* buffer)
     {
         buffer[i] = buffer[i] ^ key[i];     //Adding initial key.
     }
-    key_schedule();
+
     
     //Round 1 ~ 9
     for(int i = 1; i < 10; i++)
