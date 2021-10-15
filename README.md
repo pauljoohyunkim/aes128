@@ -15,6 +15,7 @@ Also note that x86 assembly implementation does not compile in an ARM environmen
 
 ### Compiling & Porting
 
+- C implementation is highly recommended.
 
 - Run "./compile.sh" or "bash compile.sh" for either of the implementation to create a folder called "bin" and binaries inside.
 
