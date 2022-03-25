@@ -1,5 +1,5 @@
 # aes128
-## About to become obsolete... There will be a newer project supporting other sizes as well!
+## This repository is archived now!!!
 
 ## Sample implementations of AES-128 encryption
 
