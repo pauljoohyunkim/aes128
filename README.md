@@ -1,6 +1,8 @@
 # aes128
 ## This repository is archived now!!!
 
+## Warning: DO NOT IMPLEMENT OR WRITE ANY CRYPTOGRAPHY FUNCTIONS YOURSELF FOR PRODUCTION.
+
 ## Sample implementations of AES-128 encryption
 
 The POC (Proof-of-Concept) code is currently being used to make a simple file encryption program. Read through in order to see step-by-step on how AES-128 works. Run "compile.sh" file to create binary files.
