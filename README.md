@@ -1,7 +1,7 @@
 # aes128
 ## This repository is archived now!!!
 
-## Warning: DO NOT IMPLEMENT OR WRITE ANY CRYPTOGRAPHY FUNCTIONS YOURSELF FOR PRODUCTION.
+## Warning: DO NOT IMPLEMENT OR WRITE ANY CRYPTOGRAPHY FUNCTIONS YOURSELF FOR PRODUCTION UNLESS YOU KNOW WHAT YOU ARE DOING!
 
 ## Sample implementations of AES-128 encryption
 
@@ -14,12 +14,12 @@ In the AES-CTR folder, there are two implementations of CTR mode in two language
 
 **Note that they are both natively for Linux.**
 
-Also note that x86 assembly implementation does not compile in an ARM environment. (One might need to port that somehow.) Also, **This implementation was written without a regard for optimization.** This issue might be resolved later.
+Also note that x86 assembly implementation does not compile in an ARM environment. (This would obviously require a complete rewrite in ARM assembly.) Also, **This implementation was written without a regard for optimization.**.
 
 
 ### Compiling & Porting
 
-- C implementation is highly recommended.
+- C implementation is highly recommended for studying.
 
 - Run "./compile.sh" or "bash compile.sh" for either of the implementation to create a folder called "bin" and binaries inside.
 
